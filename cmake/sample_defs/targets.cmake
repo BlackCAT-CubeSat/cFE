@@ -111,3 +111,8 @@ SET(cpu2_PROCESSORID 2)
 SET(cpu2_APPLIST ci_lab to_lab sch_lab)
 SET(cpu2_FILELIST cfe_es_startup.scr)
 
+# An example of how mission profiles can be used:
+#if(MISSION_PROFILE STREQUAL "random-test")
+#  list(APPEND cpu1_APPLIST random_tester)
+#  list(APPEND cpu1_FILELIST random_file.txt)
+#endif()

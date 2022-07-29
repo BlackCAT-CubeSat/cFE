@@ -59,6 +59,17 @@ function(initialize_globals)
       unset(MCTEMP)
     endif(NOT MISSIONCONFIG)
 
+    # As an alternative to completely separate configuration subdirectories,
+    # "mission profiles" allow for selective overriding of items (files, app lists, etc.)
+    # for related but different configurations (alternative flight platforms, tests, etc.).
+    if (NOT DEFINED MISSION_PROFILE)
+      set(ENV_MISSION_PROFILE "$ENV{MISSION_PROFILE}")
+      if ("${ENV_MISSION_PROFILE}" STREQUAL "")
+        set(ENV_MISSION_PROFILE "default")
+      endif ("${ENV_MISSION_PROFILE}" STREQUAL "")
+      set(MISSION_PROFILE "${ENV_MISSION_PROFILE}" CACHE STRING "Mission profile to use")
+    endif(NOT DEFINED MISSION_PROFILE)
+
     # Cache the values of certain environment variables used during the setup process
     # The issue with environment variables is that they are transient and may change at any time,
     # such as if the build is invoked from a different shell.  Whenever the build system is regenerated
@@ -356,6 +367,7 @@ function(prepare)
     "MISSION_PSPMODULES"
     "MISSION_DEPS"
     "ENABLE_UNIT_TESTS"
+    "MISSION_PROFILE"
   )
   foreach(APP ${MISSION_DEPS})
     list(APPEND VARLIST "${APP}_MISSION_DIR")
